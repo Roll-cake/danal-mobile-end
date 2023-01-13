@@ -1,0 +1,213 @@
+@import "vars";
+@import "mixins";
+//scss 해석이 안되서 css로 다시 변환해야 된다./자식을 따로 안만들고 바로 쓴다
+// _vars.scss 파일을 불러오겠당
+dy {
+  // 폰트 쓸때 앞 대문자 , 콤마 확인 sans는 "" 없이
+  font-family: "Lato", "Pretendard", "Dotum", sans-serif;
+  font-size: 16px;
+  color: #111;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #ccc;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #111;
+    border-radius: 100px;
+  }
+}
+a {
+  // a는 컬러를 상속받지 못해서 inherit 써준다
+  color: inherit;
+  text-decoration: none;
+}
+p {
+  line-height: 1.5;
+}
+button {
+  //btn--all 하고 함
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0;
+}
+.header {
+  $h: 60px; //모바일이니까 낮게
+  background-color: #fff;
+  height: $h;
+  position: fixed;
+  width: 100%;
+  z-index: 99; //비디오가 위에 있어서 줌
+  top: 0; //비디오가 위에 있어서 줌
+  .logo {
+    &__link {
+      display: flex;
+      align-items: center;
+      height: $h; //부모 높이에 맞춤
+      padding-left: 20px; //로고 사이
+    }
+    &__img {
+      height: 40px; // = $h-20px 연산가능
+    }
+  }
+  .btn--all {
+    width: $h;
+    height: $h;
+    position: absolute;
+    top: 0;
+    right: 0;
+    // background-color: #ccc; //확인용 child 하고 끔
+    span {
+      display: block;
+      width: 30px;
+      height: 2px;
+      background-color: #111;
+      position: absolute;
+      left: 15px; //중앙으로 가게 된다./ 스팬이 다 뭉치게 돼서 가운데로 오게된다.
+      transition: all 0.25 ease; //햄버거 목차를 엑스자로 했을때 부드럽게
+      &:nth-child(1) {
+        top: 19px;
+      }
+      &:nth-child(2) {
+        top: 29px;
+      }
+      &:nth-child(3) {
+        top: 39px;
+      } // 하나씩 펼쳐진다.
+    }
+  }
+  &.on {
+    //header가 on 이 될때
+    .btn--all {
+      span {
+        &:nth-child(1) {
+          top: 29px;
+          transform: rotate(45deg);
+        }
+        &:nth-child(2) {
+          opacity: 0;
+          transform: translateX(-50px); //왼쪽으로 사라진다.
+        }
+        &:nth-child(3) {
+          top: 29px;
+          transform: rotate(-45deg);
+        }
+      }
+    }
+    .gnb {
+      left: 0; // border darken하고 gnb left주고 / on이 되면 left 100을 0으로 만들기 위해서
+    }
+  }
+  .gnb {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    left: 100%;
+    transition: all 0.25s ease;
+    &__list {
+      > li {
+        > a {
+          //목차 큰 항목 (다날, 서비스...)
+          height: 50px;
+          display: flex;
+          align-items: center;
+          font-weight: 500;
+          border-top: 1px solid #ccc; //확인용
+          &::before {
+            //점 만들려고
+            content: "";
+            display: block;
+            width: 3px;
+            height: 3px;
+            background-color: $blue; //import 확인
+            border-radius: 10px;
+            margin: 0 10px 0 20px;
+          }
+        }
+      }
+      &--sub {
+        //목차
+        background-color: $blue;
+        color: #fff;
+        display: none; //header가 on이 되었을때만 나와야 해서
+        transition: all 0.25s ease;
+        &.on {
+          //sub에 on을 해서 왔다 갔다
+          display: block; //header가 on이 되었을때 목차가 아래로 떨어져야 하기 때문에
+        }
+        li {
+          a {
+            //목차 세부내용
+            display: flex;
+            align-items: center;
+            padding: 15px 0 15px 10px;
+            font-size: 14px;
+            border-top: 1px solid darken($blue, 10); //10%로 어둡게 나온다.
+            // border-top:1px solid #ccc; -> 회색이 들어가는게 싫어서 darken을 쓴다.
+            &:before {
+              //점 만들려고
+              content: "";
+              display: block;
+              width: 3px;
+              height: 3px;
+              background-color: #fff; //import 확인
+              border-radius: 10px;
+              margin: 0 10px 0 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .link {
+    position: absolute;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 100px;
+    top: 15px; //부모가 60px-> 15면 정가운데
+    background-color: $blue;
+    color: #fff;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    overflow: hidden;
+    @include longShadow(20, darken ($blue, 20));
+  }
+}
+.footer {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  padding: 30px 0;
+  .upper {
+    .logo {
+      img {
+        height: 40px;
+      }
+    }
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+      li {
+        a {
+          display: block;
+        }
+      }
+    }
+    .select {
+      width: 100%;
+      height: 40px;
+      border-radius: 0;
+    }
+  }
+  .lower {
+    padding-top: 30px;
+    font-size: 14px;
+  }
+}
